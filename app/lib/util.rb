@@ -45,6 +45,7 @@ class Util
     end
 
     def numerical_gradient(f, x)
+      x = np.copy.(x)
       h = 1e-4
       grad = np.zeros_like.(x)
 

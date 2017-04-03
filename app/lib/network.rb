@@ -37,14 +37,23 @@ class Network
   end
 
   def numerical_gradient(x, t)
-    loss_W = -> w { loss(x, t) }
     {
-      W1: Util.numerical_gradient(loss_W, params[:W1]),
-      b1: Util.numerical_gradient(loss_W, params[:b1]),
-      W2: Util.numerical_gradient(loss_W, params[:W2]),
-      b2: Util.numerical_gradient(loss_W, params[:b2]),
+      W1: Util.numerical_gradient(loss_w(:W1, x, t), params[:W1]),
+      b1: Util.numerical_gradient(loss_w(:b1, x, t), params[:b1]),
+      W2: Util.numerical_gradient(loss_w(:W2, x, t), params[:W2]),
+      b2: Util.numerical_gradient(loss_w(:b2, x, t), params[:b2]),
     }
   end  
+
+  def loss_w(key, x, t)
+    -> w {
+      tmp_w = params[key]
+      params[key] = w
+      l = loss(x, t)
+      params[key] = tmp_w
+      l
+    }
+  end
 
   def gradient(x, t)
     w1, w2 = params[:W1], params[:W2]
