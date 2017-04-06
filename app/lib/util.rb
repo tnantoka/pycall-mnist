@@ -15,8 +15,8 @@ class Util
       1 / (1 + np.exp.(-1 * x))
     end
 
-    def sigmoid_grad(x)
-      (1.0 - sigmoid(x)) * sigmoid(x)
+    def sigmoid_grad(out)
+      (1.0 - out) * out
     end
 
     def softmax(x)

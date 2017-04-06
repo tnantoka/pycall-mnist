@@ -21,12 +21,12 @@ describe Network do
 
   describe '#predict' do
     let(:answer) { [0.01109848, 0.01611901, 0.02341065, 0.03400074, 0.04938139, 0.07171966, 0.10416292, 0.15128229, 0.21971667, 0.31910819] } 
-    subject { array_to_a(network.predict(x_train[0]), 8) }
+    subject { array_to_a(network.predict(x_train[0])[:y], 8) }
     it { should eq answer } 
 
     context 'when batch' do
       let(:answer2) { [0.01013985, 0.01491627, 0.02194266, 0.03227887, 0.047484, 0.06985158, 0.10275554, 0.15115908, 0.22236336, 0.32710879] }
-      subject { network.predict(x_train[np.arange.(2)]) }
+      subject { network.predict(x_train[np.arange.(2)])[:y] }
       it { expect(array_to_a(subject[0], 8)).to eq answer }
       it { expect(array_to_a(subject[1], 8)).to eq answer2 }
     end
@@ -42,7 +42,7 @@ describe Network do
     let(:t) { np.array.([[1, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 1, 0, 0, 0, 0, 0, 0, 0, 0]]) }
     let(:y) { np.array.([[0.1, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0.1, 0, 0, 0, 0, 0, 0, 0, 0, 0]]) }
     before do
-      allow(network).to receive(:predict).and_return(y)
+      allow(network).to receive(:predict).and_return({ y: y })
     end
     subject { network.accuracy(x, t) }
     it { should eq 0.5 } 

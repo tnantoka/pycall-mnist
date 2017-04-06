@@ -23,7 +23,7 @@ describe Util do
 
   describe '.sigmoid_grad' do
     let(:x) { np.array.([-1.0, 1.0, 2.0]) }
-    subject { array_to_a(Util.sigmoid_grad(x), 8) }
+    subject { array_to_a(Util.sigmoid_grad(Util.sigmoid(x)), 8) }
     it { should eq [0.19661193, 0.19661193, 0.10499359] }
   end
 
