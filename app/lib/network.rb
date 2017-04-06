@@ -12,7 +12,7 @@ class Network
     }
   end
 
-  def predict(x)
+  def predict(x, skip_activate_output = false)
     w1, w2 = params[:W1], params[:W2]
     b1, b2 = params[:b1], params[:b2]
 
@@ -20,7 +20,7 @@ class Network
     z1 = Util.sigmoid(a1)
     a2 = np.dot.(z1, w2) + b2
 
-    Util.softmax(a2)
+    skip_activate_output ? a2 : Util.softmax(a2)
   end
 
   def loss(x, t)
@@ -29,7 +29,7 @@ class Network
   end
 
   def accuracy(x, t)
-    y = predict(x)
+    y = predict(x, true)
     y = np.argmax.(y, 1)
     t = np.argmax.(t, 1)
 
