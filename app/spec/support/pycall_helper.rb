@@ -1,5 +1,5 @@
 module PyCallHelper
-  def array_to_a(array, digits = nil)
-    (0...array.size).map { |i| digits.nil? ? array[i] : array[i].round(digits) }
+  def np_array_to_a(array, digits = nil)
+    Util.np_array_to_a(array).map { |v| digits.nil? ? v : v.round(digits) }
   end
 end

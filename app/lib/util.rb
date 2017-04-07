@@ -70,5 +70,9 @@ class Util
 
       grad
     end
+
+    def np_array_to_a(array)
+      (0...array.size).map { |i| array[i] }
+    end
   end
 end

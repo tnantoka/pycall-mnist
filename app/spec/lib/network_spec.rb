@@ -21,14 +21,14 @@ describe Network do
 
   describe '#predict' do
     let(:answer) { [0.01109848, 0.01611901, 0.02341065, 0.03400074, 0.04938139, 0.07171966, 0.10416292, 0.15128229, 0.21971667, 0.31910819] } 
-    subject { array_to_a(network.predict(x_train[0])[:y], 8) }
+    subject { np_array_to_a(network.predict(x_train[0])[:y], 8) }
     it { should eq answer } 
 
     context 'when batch' do
       let(:answer2) { [0.01013985, 0.01491627, 0.02194266, 0.03227887, 0.047484, 0.06985158, 0.10275554, 0.15115908, 0.22236336, 0.32710879] }
       subject { network.predict(x_train[np.arange.(2)])[:y] }
-      it { expect(array_to_a(subject[0], 8)).to eq answer }
-      it { expect(array_to_a(subject[1], 8)).to eq answer2 }
+      it { expect(np_array_to_a(subject[0], 8)).to eq answer }
+      it { expect(np_array_to_a(subject[1], 8)).to eq answer2 }
     end
   end
 
@@ -56,9 +56,9 @@ describe Network do
     let(:t_batch) { t_train[batch_mask] }
 
     let(:numerical_gradient) { network.numerical_gradient(x_batch, t_batch) }
-    let(:numerical_b1) { array_to_a(numerical_gradient[:b1], 8) }
+    let(:numerical_b1) { np_array_to_a(numerical_gradient[:b1], 8) }
     let(:gradient) { network.gradient(x_batch, t_batch) }
-    subject { array_to_a(gradient[:b1], 8) }
+    subject { np_array_to_a(gradient[:b1], 8) }
 
     it { should eq numerical_b1 }
   end  

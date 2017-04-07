@@ -1,16 +1,11 @@
 require 'simplecov'
 SimpleCov.start
 
-require 'bundler'
-Bundler.require
+require './lib'
+
+require 'fileutils'
 
 require './spec/support/pycall_helper'
-
-include PyCall::Import
-
-require './lib/util'
-require './lib/loader'
-require './lib/network'
 
 RSpec.configure do |config|
   config.before(:each) do
