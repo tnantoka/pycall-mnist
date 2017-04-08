@@ -2,6 +2,7 @@ source 'https://rubygems.org'
 
 gem 'mnist'
 gem 'pry'
+gem 'progressbar'
 gem 'pycall', require: 'pycall/import'
 gem 'rspec'
 gem 'simplecov', require: false

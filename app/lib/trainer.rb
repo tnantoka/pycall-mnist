@@ -3,6 +3,8 @@ class Trainer
     def train_mnist(limit, iters_num, batch_size, learning_rate = 0.1)
       pyimport 'numpy', as: :np
 
+      progressbar = ProgressBar.create(total: iters_num, format: '%c / %C')
+
       x_train, t_train, x_test, t_test = Loader.load_mnist(true, limit)
 
       train_size = x_train.shape[0]
@@ -36,6 +38,8 @@ class Trainer
           train_acc_list << train_acc
           test_acc_list << test_acc
         end
+
+        progressbar.increment
       end
 
       [train_loss_list, train_acc_list, test_acc_list, network.params]
@@ -54,7 +58,7 @@ class Trainer
 
     def load_params(path)
       pyimport 'numpy', as: :np
-      json = JSON.parse(File.read(path)).map { |k, v| [k, np.array.(v)] }.to_h
+      json = JSON.parse(File.read(path)).map { |k, v| [k.to_sym, np.array.(v)] }.to_h
     end
   end
 end
