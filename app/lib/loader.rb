@@ -1,6 +1,6 @@
 class Loader
   class << self
-    def load_mnist(one_hot_label = false, limit = nil)
+    def load_mnist(one_hot_label = false, limit = nil, test = true, train = true)
       pyimport 'numpy', as: :np
 
       files = %w(
@@ -9,10 +9,10 @@ class Loader
         t10k-images-idx3
         t10k-labels-idx1
       )
-      x_train = load_images('train')
-      t_train = load_labels('train')
-      x_test = load_images('t10k')
-      t_test = load_labels('t10k')
+      x_train = train ? load_images('train') : []
+      t_train = train ? load_labels('train') : []
+      x_test = test ? load_images('t10k') : []
+      t_test = test ? load_labels('t10k') : []
 
       if one_hot_label
         t_train = one_hot_labels(t_train)

@@ -12,18 +12,37 @@ path = ARGV[3] || 'tmp/params.json'
 
 train_acc_list = []
 test_acc_list = []
+
+memprof = false
+plot = true
+
+network = if File.exist?(path)
+            Predictor.new(path).network
+          else
+            Network.new
+          end
+
+Memprof2.start if memprof
+
 result = Benchmark.measure {
-  _, train_acc_list, test_acc_list, params = Trainer.train_mnist(limit, iters_num, batch_size)
+  _, train_acc_list, test_acc_list, params = Trainer.train_mnist(limit, iters_num, batch_size, network, 0.1, plot)
   Trainer.save_params(path, params)
 }
 puts Benchmark::CAPTION
 puts result
 
-x = np.arange.(train_acc_list.size)
-plt.plot.(x, train_acc_list)
-plt.plot.(x, test_acc_list, '--')
-plt.xlabel.('epochs')
-plt.ylabel.('accuracy')
-plt.ylim.(0, 1.0)
-plt.legend.('lower right')
-plt.show.()
+if memprof
+  Memprof2.report(out: 'tmp/memprof2_report')
+  Memprof2.stop
+end
+
+if plot
+  x = np.arange.(train_acc_list.size)
+  plt.plot.(x, train_acc_list)
+  plt.plot.(x, test_acc_list, '--')
+  plt.xlabel.('epochs')
+  plt.ylabel.('accuracy')
+  plt.ylim.(0, 1.0)
+  plt.legend.('lower right')
+  plt.show.()
+end

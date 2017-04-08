@@ -5,7 +5,7 @@ require 'benchmark'
 predictor = Predictor.new('data/params.json')
 
 limit = 10
-_, _, x_test, t_test = Loader.load_mnist(false, limit)
+_, _, x_test, t_test = Loader.load_mnist(false, limit, true, false)
 
 result = Benchmark.measure {
   limit.times do |i|

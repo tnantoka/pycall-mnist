@@ -1,11 +1,12 @@
 require './spec/helper'
 
 describe Trainer do
+  let(:network) { Network.new }
   describe '.train_mnist' do
     let(:limit) { 100 }
     let(:iters_num) { 100 }
     let(:batch_size) { 10 }
-    let(:data) { Trainer.train_mnist(limit, iters_num, batch_size, 0.1) }
+    let(:data) { Trainer.train_mnist(limit, iters_num, batch_size, network) }
     let(:train_loss_list) { data[0] }
     let(:train_acc_list) { data[1] }
     let(:test_acc_list) { data[2] }
@@ -15,7 +16,6 @@ describe Trainer do
     it { expect(test_acc_list.size).to eq iter_per_epoch }
   end
   describe '.save_params' do
-    let(:network) { Network.new }
     let(:path) { "tmp/params.json" }
     let(:loaded) { Trainer.load_params(path) }
     before do

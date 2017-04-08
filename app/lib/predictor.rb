@@ -1,4 +1,6 @@
 class Predictor
+  attr_accessor :network
+
   class << self
     def parse(data)
       pyimport 'numpy', as: :np
@@ -16,11 +18,11 @@ class Predictor
 
   def initialize(path)
     params = Trainer.load_params(path)
-    @network = Network.new
-    @network.params = params
+    self.network = Network.new
+    network.params = params
   end
 
   def predict(x, skip_activate_output = true)
-    @network.predict(x, skip_activate_output)
+    network.predict(x, skip_activate_output)
   end
 end

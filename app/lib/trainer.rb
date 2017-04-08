@@ -1,11 +1,11 @@
 class Trainer
   class << self
-    def train_mnist(limit, iters_num, batch_size, learning_rate = 0.1)
+    def train_mnist(limit, iters_num, batch_size, network, learning_rate = 0.1, list = true)
       pyimport 'numpy', as: :np
 
       progressbar = ProgressBar.create(total: iters_num, format: '%c / %C')
 
-      x_train, t_train, x_test, t_test = Loader.load_mnist(true, limit)
+      x_train, t_train, x_test, t_test = Loader.load_mnist(true, limit, list)
 
       train_size = x_train.shape[0]
 
@@ -14,8 +14,6 @@ class Trainer
       test_acc_list = []
 
       iter_per_epoch = [train_size / batch_size, 1].max
-
-      network = Network.new
 
       iters_num.times do |i|
         batch_mask = np.random.choice.(train_size, batch_size)
@@ -29,15 +27,19 @@ class Trainer
           network.params[key] -= learning_rate * grads[key]
         end
 
-        loss = network.loss(x_batch, t_batch)
-        train_loss_list << loss
+        if list
+          loss = network.loss(x_batch, t_batch)
+          train_loss_list << loss
 
-        if i % iter_per_epoch == 0
-          train_acc = network.accuracy(x_train, t_train)
-          test_acc = network.accuracy(x_test, t_test)
-          train_acc_list << train_acc
-          test_acc_list << test_acc
+          if i % iter_per_epoch == 0
+            train_acc = network.accuracy(x_train, t_train)
+            test_acc = network.accuracy(x_test, t_test)
+            train_acc_list << train_acc
+            test_acc_list << test_acc
+          end
         end
+
+        grads.clear
 
         progressbar.increment
       end

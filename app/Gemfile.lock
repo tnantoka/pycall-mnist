@@ -7,6 +7,7 @@ GEM
     docile (1.1.5)
     ffi (1.9.18)
     json (2.0.3)
+    memprof2 (0.1.1)
     method_source (0.8.2)
     mnist (0.1.0)
     progressbar (1.8.2)
@@ -53,6 +54,7 @@ PLATFORMS
 
 DEPENDENCIES
   chunky_png
+  memprof2
   mnist
   progressbar
   pry
