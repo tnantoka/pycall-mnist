@@ -1,5 +1,6 @@
 source 'https://rubygems.org'
 
+gem 'chunky_png'
 gem 'mnist'
 gem 'pry'
 gem 'progressbar'
@@ -7,3 +8,4 @@ gem 'pycall', require: 'pycall/import'
 gem 'rspec'
 gem 'simplecov', require: false
 gem 'sinatra', require: false
+gem 'slim'

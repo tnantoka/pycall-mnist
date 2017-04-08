@@ -1,0 +1,30 @@
+h1, h2 {
+  font-weight: 100;
+}
+
+canvas {
+  border: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+button {
+  width: 138px;
+  border-radius: 0 !important;
+}
+
+a {
+  color: inherit;
+  font-weight: 100;
+}
+
+table {
+  width: 280px;
+  margin: auto;
+}
+
+td {
+  width: 33%;
+}
+
+img {
+  max-width: 100%;
+}
