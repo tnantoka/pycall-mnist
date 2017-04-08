@@ -1,7 +1,7 @@
 class Predictor
   def initialize(path)
     params = Trainer.load_params(path)
-    @network = Network.new(784, 50, 10)
+    @network = Network.new
     @network.params = params
   end
 

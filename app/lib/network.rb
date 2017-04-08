@@ -1,8 +1,12 @@
 class Network
-  attr_accessor :params
+  attr_accessor :params, :input_size, :hidden_size, :output_size
 
-  def initialize(input_size, hidden_size, output_size, weight_init_std = 0.01)
+  def initialize(input_size = 784, hidden_size = 50, output_size = 10, weight_init_std = 0.01)
     pyimport 'numpy', as: :np
+
+    self.input_size = input_size
+    self.hidden_size = hidden_size
+    self.output_size = output_size
 
     self.params = {
       W1: weight_init_std * np.random.randn.(input_size, hidden_size),

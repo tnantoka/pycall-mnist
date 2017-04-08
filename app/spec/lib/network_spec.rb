@@ -2,10 +2,10 @@ require './spec/helper'
 
 describe Network do
   let(:network) do
-    Network.new(784, 50, 10).tap do |n|
+    Network.new.tap do |n|
       n.params[:W1].fill.(0.01)
-      50.times do |i|
-        10.times do |j|
+      n.hidden_size.times do |i|
+        n.output_size.times do |j|
           n.params[:W2][i][j] = j * 0.01
         end
       end

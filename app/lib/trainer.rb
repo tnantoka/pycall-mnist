@@ -15,7 +15,7 @@ class Trainer
 
       iter_per_epoch = [train_size / batch_size, 1].max
 
-      network = Network.new(784, 50, 10)
+      network = Network.new
 
       iters_num.times do |i|
         batch_mask = np.random.choice.(train_size, batch_size)
