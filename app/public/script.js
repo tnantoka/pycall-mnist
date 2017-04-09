@@ -2,8 +2,9 @@ $(function() {
   var $canvas = $('canvas')
   var canvas = $canvas.get(0)
   var context = canvas.getContext('2d')
+  var blank = canvas.toDataURL()
 
-  context.lineWidth = 14
+  context.lineWidth = 18
   context.lineJoin = 'round'
 
   // https://software.intel.com/en-us/html5/articles/touch-drawing-app-using-html5-canvas
@@ -57,6 +58,9 @@ $(function() {
   $submit.click(function(e) {
     var $this = $(this)
     var dataURL = canvas.toDataURL()
+    if (blank == dataURL) {
+      return
+    }
     $this.prop('disabled', true)
     $.post('/predict', { data_url: dataURL }, function(json) {
       $this.prop('disabled', false)
