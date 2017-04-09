@@ -12,7 +12,7 @@ class Network
       W1: weight_init_std * np.random.randn.(input_size, hidden_size),
       b1: np.zeros.(hidden_size),
       W2: weight_init_std * np.random.randn.(hidden_size, output_size),
-      b2: np.zeros.(output_size),
+      b2: np.zeros.(output_size)
     }
   end
 
@@ -25,7 +25,7 @@ class Network
     a2 = np.dot.(z1, w2) + b2
     y = skip_activate_output ? a2 : Util.softmax(a2)
 
-    { w2: w2, a1: a1, z1: z1, a2: a2, y: y }
+    { w2: w2, z1: z1, y: y }
   end
 
   def loss(x, t)
@@ -46,18 +46,18 @@ class Network
       W1: Util.numerical_gradient(loss_w(:W1, x, t), params[:W1]),
       b1: Util.numerical_gradient(loss_w(:b1, x, t), params[:b1]),
       W2: Util.numerical_gradient(loss_w(:W2, x, t), params[:W2]),
-      b2: Util.numerical_gradient(loss_w(:b2, x, t), params[:b2]),
+      b2: Util.numerical_gradient(loss_w(:b2, x, t), params[:b2])
     }
-  end  
+  end
 
   def loss_w(key, x, t)
-    -> w {
+    lambda do |w|
       tmp_w = params[key]
       params[key] = w
       l = loss(x, t)
       params[key] = tmp_w
       l
-    }
+    end
   end
 
   def gradient(x, t)
@@ -66,7 +66,7 @@ class Network
     batch_num = x.shape[0]
 
     forward = predict(x)
-    w2, a1, z1, a2, y = forward[:w2], forward[:a1], forward[:z1], forward[:a2], forward[:y]
+    w2, z1, y = forward[:w2], forward[:z1], forward[:y]
 
     dy = (y - t) / batch_num
     grads[:W2] = np.dot.(z1.T, dy)
@@ -77,6 +77,6 @@ class Network
     grads[:W1] = np.dot.(x.T, dz1)
     grads[:b1] = np.sum.(dz1, 0)
 
-    return grads
+    grads
   end
 end

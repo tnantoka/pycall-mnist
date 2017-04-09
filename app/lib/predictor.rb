@@ -7,8 +7,8 @@ class Predictor
 
       length = 28
       canvas = ChunkyPNG::Canvas.from_data_url(data).resize(length, length)
-      pixels = np.array.(length.times.map do |i|
-        length.times.map do |j|
+      pixels = np.array.(Array.new(length) do |i|
+        Array.new(length) do |j|
           canvas[j, i] / 255.0
         end
       end.flatten)

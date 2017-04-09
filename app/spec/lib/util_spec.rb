@@ -4,8 +4,8 @@ describe Util do
   describe '.identity' do
     let(:x) { 1 }
     subject { Util.identity(x) }
-    it { should eq x  }
-  end  
+    it { should eq x }
+  end
 
   describe '.sigmoid' do
     let(:x) { np.array.([-1.0, 1.0, 2.0]) }
@@ -57,7 +57,7 @@ describe Util do
   end
 
   describe '.numerical_gradient' do
-    let(:f) { -> x { x[0] ** 2 + x[1] ** 2 } }
+    let(:f) { ->(x) { x[0]**2 + x[1]**2 } }
     let(:x) { np.array.([3.0, 4.0]) }
     subject { np_array_to_a(Util.numerical_gradient(f, x), 1) }
     it { should eq [6.0, 8.0] }

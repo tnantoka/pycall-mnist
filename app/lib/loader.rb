@@ -3,12 +3,6 @@ class Loader
     def load_mnist(one_hot_label = false, limit = nil, test = true, train = true)
       pyimport 'numpy', as: :np
 
-      files = %w(
-        train-images-idx3
-        train-labels-idx1
-        t10k-images-idx3
-        t10k-labels-idx1
-      )
       x_train = train ? load_images('train') : []
       t_train = train ? load_labels('train') : []
       x_test = test ? load_images('t10k') : []
@@ -31,7 +25,7 @@ class Loader
     end
 
     def load_labels(type)
-      Mnist.load_labels(path("#{type}-labels-idx1")) 
+      Mnist.load_labels(path("#{type}-labels-idx1"))
     end
 
     def path(file)

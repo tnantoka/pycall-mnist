@@ -16,7 +16,7 @@ describe Trainer do
     it { expect(test_acc_list.size).to eq iter_per_epoch }
   end
   describe '.save_params' do
-    let(:path) { "tmp/params.json" }
+    let(:path) { 'tmp/params.json' }
     let(:loaded) { Trainer.load_params(path) }
     before do
       Trainer.save_params(path, network.params)

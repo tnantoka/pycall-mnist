@@ -17,5 +17,5 @@ describe Loader do
     it { expect(x_test.shape[1]).to eq network.input_size }
     it { expect(t_test.shape[0]).to eq limit }
     it { expect(t_test.shape[1]).to eq network.output_size }
-  end  
+  end
 end

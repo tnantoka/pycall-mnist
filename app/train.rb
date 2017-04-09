@@ -24,10 +24,10 @@ network = if File.exist?(path)
 
 Memprof2.start if memprof
 
-result = Benchmark.measure {
+result = Benchmark.measure do
   _, train_acc_list, test_acc_list, params = Trainer.train_mnist(limit, iters_num, batch_size, network, 0.1, plot)
   Trainer.save_params(path, params)
-}
+end
 puts Benchmark::CAPTION
 puts result
 

@@ -31,7 +31,7 @@ class Trainer
           loss = network.loss(x_batch, t_batch)
           train_loss_list << loss
 
-          if i % iter_per_epoch == 0
+          if (i % iter_per_epoch).zero?
             train_acc = network.accuracy(x_train, t_train)
             test_acc = network.accuracy(x_test, t_test)
             train_acc_list << train_acc
@@ -52,7 +52,7 @@ class Trainer
         if value.ndim == 1
           [key, Util.np_array_to_a(params[key])]
         else
-          [key, params[key].shape[0].times.map { |i| Util.np_array_to_a(params[key][i]) }]
+          [key, Array.new(params[key].shape[0]) { |i| Util.np_array_to_a(params[key][i]) }]
         end
       end.to_h
       File.write(path, json.to_json)
@@ -60,7 +60,7 @@ class Trainer
 
     def load_params(path)
       pyimport 'numpy', as: :np
-      json = JSON.parse(File.read(path)).map { |k, v| [k.to_sym, np.array.(v)] }.to_h
+      JSON.parse(File.read(path)).map { |k, v| [k.to_sym, np.array.(v)] }.to_h
     end
   end
 end

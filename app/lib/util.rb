@@ -25,7 +25,7 @@ class Util
       exp_x = np.exp.(xt - c)
       sum_exp_x = np.sum.(exp_x, 0)
       y = exp_x / sum_exp_x
-      y.T 
+      y.T
     end
 
     def cross_entropy_error(y, t)
@@ -41,7 +41,7 @@ class Util
       batch_size = y.shape[0]
       output_for_answer = y[np.arange.(batch_size), t]
       sum = -np.sum.(np.log.(output_for_answer))
-      return sum / batch_size
+      sum / batch_size
     end
 
     def numerical_gradient(f, x)
@@ -55,7 +55,7 @@ class Util
         tmp_val = x[i]
 
         x[i] = tmp_val + h
-        forward = f.call(x)    
+        forward = f.call(x)
 
         x[i] = tmp_val - h
         backward = f.call(x)

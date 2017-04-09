@@ -20,9 +20,9 @@ describe Network do
   let(:t_test) { data[3] }
 
   describe '#predict' do
-    let(:answer) { [0.01109848, 0.01611901, 0.02341065, 0.03400074, 0.04938139, 0.07171966, 0.10416292, 0.15128229, 0.21971667, 0.31910819] } 
+    let(:answer) { [0.01109848, 0.01611901, 0.02341065, 0.03400074, 0.04938139, 0.07171966, 0.10416292, 0.15128229, 0.21971667, 0.31910819] }
     subject { np_array_to_a(network.predict(x_train[0])[:y], 8) }
-    it { should eq answer } 
+    it { should eq answer }
 
     context 'when batch' do
       let(:answer2) { [0.01013985, 0.01491627, 0.02194266, 0.03227887, 0.047484, 0.06985158, 0.10275554, 0.15115908, 0.22236336, 0.32710879] }
@@ -34,7 +34,7 @@ describe Network do
 
   describe '#loss' do
     subject { network.loss(x_train, t_train).round(8) }
-    it { should eq 3.61313646 } 
+    it { should eq 3.61313646 }
   end
 
   describe '#accuracy' do
@@ -42,10 +42,10 @@ describe Network do
     let(:t) { np.array.([[1, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 1, 0, 0, 0, 0, 0, 0, 0, 0]]) }
     let(:y) { np.array.([[0.1, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0.1, 0, 0, 0, 0, 0, 0, 0, 0, 0]]) }
     before do
-      allow(network).to receive(:predict).and_return({ y: y })
+      allow(network).to receive(:predict).and_return(y: y)
     end
     subject { network.accuracy(x, t) }
-    it { should eq 0.5 } 
+    it { should eq 0.5 }
   end
 
   describe '#gradient' do
@@ -61,5 +61,5 @@ describe Network do
     subject { np_array_to_a(gradient[:b1], 8) }
 
     it { should eq numerical_b1 }
-  end  
+  end
 end
