@@ -67,7 +67,7 @@ $(function() {
       var $img = $('<img>').prop('src', json.image)
       var $tr = $('<tr>')
       $('<td>').html($img).appendTo($tr)
-      $('<td>').html(json.label).appendTo($tr)
+      $('<td class="label">').html(json.label).appendTo($tr)
       $('<td>').html(json.percent + '%').appendTo($tr)
       $tr.prependTo($table).hide().fadeIn()
       clearCanvas()

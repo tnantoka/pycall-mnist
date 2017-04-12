@@ -25,6 +25,10 @@ td {
   width: 33%;
 }
 
+td.label {
+  font-size: 1.25rem;
+}
+
 img {
   max-width: 100%;
 }
