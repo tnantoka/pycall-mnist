@@ -8,21 +8,13 @@ class Network
     self.hidden_size = hidden_size
     self.output_size = output_size
 
-    self.params = {
-      W1: weight_init_std * np.random.randn.(input_size, hidden_size),
-      b1: np.zeros.(hidden_size),
-      W2: weight_init_std * np.random.randn.(hidden_size, output_size),
-      b2: np.zeros.(output_size)
-    }
+    init_params(weight_init_std)
   end
 
   def predict(x, skip_activate_output = false)
-    w1, w2 = params[:W1], params[:W2]
-    b1, b2 = params[:b1], params[:b2]
-
-    a1 = np.dot.(x, w1) + b1
+    a1 = NP.dot(x, w1) + b1
     z1 = Util.sigmoid(a1)
-    a2 = np.dot.(z1, w2) + b2
+    a2 = NP.dot(z1, w2) + b2
     y = skip_activate_output ? a2 : Util.softmax(a2)
 
     { w2: w2, z1: z1, y: y }
@@ -35,18 +27,18 @@ class Network
 
   def accuracy(x, t)
     y = predict(x, true)[:y]
-    y = np.argmax.(y, 1)
-    t = np.argmax.(t, 1)
+    y = NP.argmax(y, 1)
+    t = NP.argmax(t, 1)
 
     np.sum.(y == t) / x.shape[0].to_f
   end
 
   def numerical_gradient(x, t)
     {
-      W1: Util.numerical_gradient(loss_w(:W1, x, t), params[:W1]),
-      b1: Util.numerical_gradient(loss_w(:b1, x, t), params[:b1]),
-      W2: Util.numerical_gradient(loss_w(:W2, x, t), params[:W2]),
-      b2: Util.numerical_gradient(loss_w(:b2, x, t), params[:b2])
+      W1: Util.numerical_gradient(loss_w(:W1, x, t), w1),
+      b1: Util.numerical_gradient(loss_w(:b1, x, t), b1),
+      W2: Util.numerical_gradient(loss_w(:W2, x, t), w2),
+      b2: Util.numerical_gradient(loss_w(:b2, x, t), b2)
     }
   end
 
@@ -61,22 +53,53 @@ class Network
   end
 
   def gradient(x, t)
-    grads = {}
-
-    batch_num = x.shape[0]
-
     forward = predict(x)
+    z1 = forward[:z1]
+    dy, dz1 = gradient_delta(x, t, forward)
+    {
+      W1: NP.dot(x.T, dz1),
+      b1: NP.sum(dz1, 0),
+      W2: NP.dot(z1.T, dy),
+      b2: NP.sum(dy, 0)
+    }
+  end
+
+  private
+
+  def gradient_delta(x, t, forward)
+    batch_num = x.shape[0]
     w2, z1, y = forward[:w2], forward[:z1], forward[:y]
 
     dy = (y - t) / batch_num
-    grads[:W2] = np.dot.(z1.T, dy)
-    grads[:b2] = np.sum.(dy, 0)
 
-    da1 = np.dot.(dy, w2.T)
+    da1 = NP.dot(dy, w2.T)
     dz1 = Util.sigmoid_grad(z1) * da1
-    grads[:W1] = np.dot.(x.T, dz1)
-    grads[:b1] = np.sum.(dz1, 0)
 
-    grads
+    [dy, dz1]
+  end
+
+  def w1
+    params[:W1]
+  end
+
+  def w2
+    params[:W2]
+  end
+
+  def b1
+    params[:b1]
+  end
+
+  def b2
+    params[:b2]
+  end
+
+  def init_params(weight_init_std)
+    self.params = {
+      W1: weight_init_std * NP.randn(input_size, hidden_size),
+      b1: NP.zeros(hidden_size),
+      W2: weight_init_std * NP.randn(hidden_size, output_size),
+      b2: NP.zeros(output_size)
+    }
   end
 end

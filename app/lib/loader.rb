@@ -3,20 +3,21 @@ class Loader
     def load_mnist(one_hot_label = false, limit = nil, test = true, train = true)
       pyimport 'numpy', as: :np
 
-      x_train = train ? load_images('train') : []
-      t_train = train ? load_labels('train') : []
-      x_test = test ? load_images('t10k') : []
-      t_test = test ? load_labels('t10k') : []
-
-      if one_hot_label
-        t_train = one_hot_labels(t_train)
-        t_test = one_hot_labels(t_test)
-      end
+      x_train, t_train = load_or_blank('train', one_hot_label, !train)
+      x_test, t_test = load_or_blank('t10k', one_hot_label, !test)
 
       [x_train, t_train, x_test, t_test].map { |a| limit.to_i.zero? ? a : a[0...limit] }.map { |a| np.array.(a) }
     end
 
     private
+
+    def load_or_blank(type, one_hot_label, blank)
+      return [[], []] if blank
+      images = load_images(type)
+      labels = load_labels(type)
+      labels = one_hot_labels(labels) if one_hot_label
+      [images, labels]
+    end
 
     def load_images(type)
       Mnist.load_images(path("#{type}-images-idx3"))[2].map do |image|

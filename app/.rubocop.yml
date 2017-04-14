@@ -1,5 +1,8 @@
 Metrics/LineLength:
   Enabled: false
+Metrics/BlockLength:
+  Exclude:
+    - 'spec/**/*'
 Style/Documentation:
   Enabled: false
 Style/FrozenStringLiteralComment:
@@ -7,16 +10,4 @@ Style/FrozenStringLiteralComment:
 Style/LambdaCall:
   Enabled: false
 Style/ParallelAssignment:
-  Enabled: false
-
-# TODO
-Metrics/CyclomaticComplexity:
-  Enabled: false
-Metrics/MethodLength:
-  Enabled: false
-Metrics/ParameterLists:
-  Enabled: false
-Metrics/AbcSize:
-  Enabled: false
-Metrics/BlockLength:
   Enabled: false
