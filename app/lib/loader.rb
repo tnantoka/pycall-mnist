@@ -1,12 +1,10 @@
 class Loader
   class << self
     def load_mnist(one_hot_label = false, limit = nil, test = true, train = true)
-      pyimport 'numpy', as: :np
-
       x_train, t_train = load_or_blank('train', one_hot_label, !train)
       x_test, t_test = load_or_blank('t10k', one_hot_label, !test)
 
-      [x_train, t_train, x_test, t_test].map { |a| limit.to_i.zero? ? a : a[0...limit] }.map { |a| np.array.(a) }
+      [x_train, t_train, x_test, t_test].map { |a| limit.to_i.zero? ? a : a[0...limit] }.map { |a| NP.array(a) }
     end
 
     private

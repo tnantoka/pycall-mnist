@@ -1,13 +1,11 @@
 class Util
-  pyimport 'numpy', as: :np
-
   class << self
     def identity(x)
       x
     end
 
     def sigmoid(x)
-      1 / (1 + np.exp.(-1 * x))
+      1 / (1 + NP.exp(-1 * x))
     end
 
     def sigmoid_grad(out)
@@ -16,9 +14,9 @@ class Util
 
     def softmax(x)
       xt = x.T
-      c = np.max.(xt, 0)
-      exp_x = np.exp.(xt - c)
-      sum_exp_x = np.sum.(exp_x, 0)
+      c = NP.max(xt, 0)
+      exp_x = NP.exp(xt - c)
+      sum_exp_x = NP.sum(exp_x, 0)
       y = exp_x / sum_exp_x
       y.T
     end
@@ -34,10 +32,10 @@ class Util
     end
 
     def numerical_gradient(f, x)
-      x = np.copy.(x)
-      grad = np.zeros_like.(x)
+      x = NP.copy(x)
+      grad = NP.zeros_like(x)
 
-      it = np.nditer.(x, ['multi_index'], ['readwrite'])
+      it = NP.nditer(x, ['multi_index'], ['readwrite'])
       loop do
         i = it.multi_index
         grad[i] = central_diff(f, x, i)

@@ -2,8 +2,6 @@ class Network
   attr_accessor :params, :input_size, :hidden_size, :output_size
 
   def initialize(input_size = 784, hidden_size = 50, output_size = 10, weight_init_std = 0.01)
-    pyimport 'numpy', as: :np
-
     self.input_size = input_size
     self.hidden_size = hidden_size
     self.output_size = output_size
@@ -30,7 +28,7 @@ class Network
     y = NP.argmax(y, 1)
     t = NP.argmax(t, 1)
 
-    np.sum.(y == t) / x.shape[0].to_f
+    NP.sum(y == t) / x.shape[0].to_f
   end
 
   def numerical_gradient(x, t)

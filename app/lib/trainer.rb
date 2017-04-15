@@ -8,8 +8,7 @@ class Trainer
     end
 
     def load_params(path)
-      pyimport 'numpy', as: :np
-      JSON.parse(File.read(path)).map { |k, v| [k.to_sym, np.array.(v)] }.to_h
+      JSON.parse(File.read(path)).map { |k, v| [k.to_sym, NP.array(v)] }.to_h
     end
 
     private
@@ -24,7 +23,6 @@ class Trainer
   end
 
   def initialize(network)
-    pyimport 'numpy', as: :np
     self.network = network
     self.optimizer = SGD.new
   end
@@ -53,7 +51,7 @@ class Trainer
 
   def batch(mnist, batch_size, train_size)
     x_train, t_train = mnist
-    batch_mask = np.random.choice.(train_size, batch_size)
+    batch_mask = NP.choice(train_size, batch_size)
     x_batch = x_train[batch_mask]
     t_batch = t_train[batch_mask]
     [x_batch, t_batch]

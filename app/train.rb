@@ -2,7 +2,6 @@ require './lib'
 
 require 'benchmark'
 
-pyimport 'numpy', as: :np
 pyimport 'matplotlib.pyplot', as: :plt
 
 limit = ARGV[0].nil? ? 100 : ARGV[0].to_i
@@ -38,7 +37,7 @@ if memprof
 end
 
 if plot
-  x = np.arange.(train_acc_list.size)
+  x = NP.arange(train_acc_list.size)
   plt.plot.(x, train_acc_list)
   plt.plot.(x, test_acc_list, '--')
   plt.xlabel.('epochs')

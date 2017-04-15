@@ -26,7 +26,7 @@ describe Network do
 
     context 'when batch' do
       let(:answer2) { [0.01013985, 0.01491627, 0.02194266, 0.03227887, 0.047484, 0.06985158, 0.10275554, 0.15115908, 0.22236336, 0.32710879] }
-      subject { network.predict(x_train[np.arange.(2)])[:y] }
+      subject { network.predict(x_train[NP.arange(2)])[:y] }
       it { expect(np_array_to_a(subject[0], 8)).to eq answer }
       it { expect(np_array_to_a(subject[1], 8)).to eq answer2 }
     end
@@ -38,9 +38,9 @@ describe Network do
   end
 
   describe '#accuracy' do
-    let(:x) { x_train[np.arange.(2)] }
-    let(:t) { np.array.([[1, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 1, 0, 0, 0, 0, 0, 0, 0, 0]]) }
-    let(:y) { np.array.([[0.1, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0.1, 0, 0, 0, 0, 0, 0, 0, 0, 0]]) }
+    let(:x) { x_train[NP.arange(2)] }
+    let(:t) { NP.array([[1, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 1, 0, 0, 0, 0, 0, 0, 0, 0]]) }
+    let(:y) { NP.array([[0.1, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0.1, 0, 0, 0, 0, 0, 0, 0, 0, 0]]) }
     before do
       allow(network).to receive(:predict).and_return(y: y)
     end
@@ -51,7 +51,7 @@ describe Network do
   describe '#gradient' do
     let(:train_size) { x_train.shape[0] }
     let(:batch_size) { 1 }
-    let(:batch_mask) { np.random.choice.(train_size, batch_size) }
+    let(:batch_mask) { NP.choice(train_size, batch_size) }
     let(:x_batch) { x_train[batch_mask] }
     let(:t_batch) { t_train[batch_mask] }
 

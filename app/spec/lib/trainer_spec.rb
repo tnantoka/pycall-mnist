@@ -26,6 +26,6 @@ describe Trainer do
       FileUtils.rm_rf(path)
     end
     it { expect(File.exist?(path)).to eq true }
-    it { expect(np.array_equal.(network.params.values[0], loaded.values[0])).to eq true }
+    it { expect(NP.array_equal(network.params.values[0], loaded.values[0])).to eq true }
   end
 end
