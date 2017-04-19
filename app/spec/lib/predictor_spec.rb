@@ -8,7 +8,7 @@ describe Predictor do
 
   describe '#predict' do
     let(:predictor) { Predictor.new('data/params.json') }
-    subject { predictor.predict(pixels)[:y].argmax.().to_s.to_i }
+    subject { predictor.predict(pixels).argmax.().to_s.to_i }
     it { should eq 2 }
   end
 

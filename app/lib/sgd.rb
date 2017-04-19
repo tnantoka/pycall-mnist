@@ -1,7 +1,7 @@
 class SGD
-  def update(params, grads, learning_rate)
-    params.keys.each do |key|
-      params[key] -= learning_rate * grads[key]
-    end
+  def update(network, grads, learning_rate)
+    network.params = network.params.map do |key, value|
+      [key, value - learning_rate * grads[key]]
+    end.to_h
   end
 end

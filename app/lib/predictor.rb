@@ -20,7 +20,7 @@ class Predictor
     network.params = params
   end
 
-  def predict(x, skip_activate_output = true)
-    network.predict(x, skip_activate_output)
+  def predict(x)
+    network.predict(x)
   end
 end
