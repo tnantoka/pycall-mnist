@@ -103,8 +103,8 @@ class Network
   def init_layers
     self.layers = {
       affine1: Affine.new(w1, b1),
-      # relu1: Relu.new,
-      sigmoid1: Sigmoid.new,
+      relu1: Relu.new,
+      # sigmoid1: Sigmoid.new,
       affine2: Affine.new(w2, b2)
     }
     self.lastLayer = SoftmaxWithLoss.new

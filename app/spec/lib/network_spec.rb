@@ -3,12 +3,14 @@ require './spec/helper'
 describe Network do
   let(:network) do
     Network.new.tap do |n|
-      n.params[:W1].fill.(0.01)
+      params = n.params
+      params[:W1].fill.(0.01)
       n.hidden_size.times do |i|
         n.output_size.times do |j|
-          n.params[:W2][i][j] = j * 0.01
+          params[:W2][i][j] = j * 0.01
         end
       end
+      n.params = params
     end
   end
 
@@ -18,23 +20,24 @@ describe Network do
   let(:t_train) { data[1] }
   let(:x_test) { data[2] }
   let(:t_test) { data[3] }
+  let(:digits) { 6 }
 
   describe '#predict' do
-    let(:answer) { [0.01109848, 0.01611901, 0.02341065, 0.03400074, 0.04938139, 0.07171966, 0.10416292, 0.15128229, 0.21971667, 0.31910819] }
-    subject { Util.softmax(network.predict(x_train[0])) }
-    it { expect(np_array_to_a(subject, 8)).to eq answer }
+    let(:answer) { [0.0, 0.53970589, 1.07941178, 1.61911766, 2.15882355, 2.69852944, 3.23823533, 3.77794121, 4.3176471, 4.85735299].map { |a| a.round(digits) } }
+    subject { network.predict(x_train[0]) }
+    it { expect(np_array_to_a(subject, digits)).to eq answer }
 
     context 'when batch' do
-      let(:answer2) { [0.01013985, 0.01491627, 0.02194266, 0.03227887, 0.047484, 0.06985158, 0.10275554, 0.15115908, 0.22236336, 0.32710879] }
-      subject { Util.softmax(network.predict(x_train[NP.arange(2)])) }
-      it { expect(np_array_to_a(subject[0], 8)).to eq answer }
-      it { expect(np_array_to_a(subject[1], 8)).to eq answer2 }
+      let(:answer2) { [0.0, 0.60970589, 1.21941178, 1.82911766, 2.43882355, 3.04852944, 3.65823533, 4.26794122, 4.8776471, 5.48735299].map { |a| a.round(digits) } }
+      subject { network.predict(x_train[NP.arange(2)]) }
+      it { expect(np_array_to_a(subject[0], digits)).to eq answer }
+      it { expect(np_array_to_a(subject[1], digits)).to eq answer2 }
     end
   end
 
   describe '#loss' do
-    subject { network.loss(x_train, t_train).round(8) }
-    it { should eq 3.61313646 }
+    subject { network.loss(x_train, t_train).round(7) }
+    it { should eq 4.64902540714.round(7) }
   end
 
   describe '#accuracy' do
