@@ -65,7 +65,7 @@ class Trainer
       # grads = network.numerical_gradient(x_batch, t_batch)
       grads = network.gradient(x_batch, t_batch)
 
-      optimizer.update(network.params, grads, learning_rate)
+      optimizer.update(network, grads, learning_rate)
 
       yield i, x_batch, t_batch
       progressbar.increment

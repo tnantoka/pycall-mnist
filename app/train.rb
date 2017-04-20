@@ -31,6 +31,8 @@ end
 puts Benchmark::CAPTION
 puts result
 
+puts "train acc, test acc | #{train_acc_list.last}%, #{test_acc_list.last}%"
+
 if memprof
   Memprof2.report(out: 'tmp/memprof2_report')
   Memprof2.stop

@@ -1,5 +1,5 @@
 class Network
-  attr_accessor :params, :input_size, :hidden_size, :output_size
+  attr_accessor :params, :input_size, :hidden_size, :output_size, :layers, :lastLayer
 
   def initialize(input_size = 784, hidden_size = 50, output_size = 10, weight_init_std = 0.01)
     self.input_size = input_size
@@ -9,22 +9,21 @@ class Network
     init_params(weight_init_std)
   end
 
-  def predict(x, skip_activate_output = false)
-    a1 = NP.dot(x, w1) + b1
-    z1 = Util.sigmoid(a1)
-    a2 = NP.dot(z1, w2) + b2
-    y = skip_activate_output ? a2 : Util.softmax(a2)
-
-    { w2: w2, z1: z1, y: y }
+  def predict(x)
+    y = x
+    layers.values.each do |layer|
+      y = layer.forward(y)
+    end
+    y
   end
 
   def loss(x, t)
-    y = predict(x)[:y]
-    Util.cross_entropy_error(y, t)
+    y = predict(x)
+    lastLayer.forward(y, t)
   end
 
   def accuracy(x, t)
-    y = predict(x, true)[:y]
+    y = predict(x)
     y = NP.argmax(y, 1)
     t = NP.argmax(t, 1)
 
@@ -42,38 +41,38 @@ class Network
 
   def loss_w(key, x, t)
     lambda do |w|
-      tmp_w = params[key]
-      params[key] = w
+      tmp_params = params
+      self.params = params.merge(key => w)
       l = loss(x, t)
-      params[key] = tmp_w
+      self.params = tmp_params
       l
     end
   end
 
   def gradient(x, t)
-    forward = predict(x)
-    z1 = forward[:z1]
-    dy, dz1 = gradient_delta(x, t, forward)
+    gradient_delta(x, t)
     {
-      W1: NP.dot(x.T, dz1),
-      b1: NP.sum(dz1, 0),
-      W2: NP.dot(z1.T, dy),
-      b2: NP.sum(dy, 0)
+      W1: layers[:affine1].dw,
+      b1: layers[:affine1].db,
+      W2: layers[:affine2].dw,
+      b2: layers[:affine2].db
     }
+  end
+
+  def params=(params)
+    @params = params
+    init_layers
   end
 
   private
 
-  def gradient_delta(x, t, forward)
-    batch_num = x.shape[0]
-    w2, z1, y = forward[:w2], forward[:z1], forward[:y]
+  def gradient_delta(x, t)
+    loss(x, t)
 
-    dy = (y - t) / batch_num
-
-    da1 = NP.dot(dy, w2.T)
-    dz1 = Util.sigmoid_grad(z1) * da1
-
-    [dy, dz1]
+    dout = 1
+    ([lastLayer] + layers.values.reverse).each do |layer|
+      dout = layer.backward(dout)
+    end
   end
 
   def w1
@@ -99,5 +98,15 @@ class Network
       W2: weight_init_std * NP.randn(hidden_size, output_size),
       b2: NP.zeros(output_size)
     }
+  end
+
+  def init_layers
+    self.layers = {
+      affine1: Affine.new(w1, b1),
+      relu1: Relu.new,
+      # sigmoid1: Sigmoid.new,
+      affine2: Affine.new(w2, b2)
+    }
+    self.lastLayer = SoftmaxWithLoss.new
   end
 end
